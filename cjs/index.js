@@ -245,7 +245,12 @@ if (!customElements.get(TAG)) {
     for (const {target} of entries) {
       const pre = targets.get(target);
       const {border, font, letterSpacing, lineHeight, padding, wordSpacing} = getComputedStyle(target);
-      const {top, left, width, height} = target.getBoundingClientRect();
+      let {top, left, width, height} = target.getBoundingClientRect();
+      if (target.offsetParent){
+        const parentRect = target.offsetParent.getBoundingClientRect();
+        top = top - parentRect.top;
+        left = left - parentRect.left;
+      }
       pre.style.cssText = `
         position: absolute;
         overflow: auto;
